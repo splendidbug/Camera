@@ -8,6 +8,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.io.IOException;
+import java.util.List;
 
 public class showCamera extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -27,6 +28,16 @@ public class showCamera extends SurfaceView implements SurfaceHolder.Callback {
     Camera.Parameters params = camera.getParameters();
     //we can set parameters through the above params by using .set method
 
+        // get the resolution of the camera hardware of phone like use 8MP camera or 13MP camera, whichever the phone has
+
+        List<Camera.Size> sizes  = params.getSupportedPictureSizes();
+        Camera.Size mSize  = null;
+
+        for(Camera.Size size : sizes) // enhanced for loop
+        {
+            mSize = size;
+        }
+
     // now we have to change the orientation of the camera
         if(this.getResources().getConfiguration().orientation!=Configuration.ORIENTATION_LANDSCAPE)
         {
@@ -41,7 +52,7 @@ public class showCamera extends SurfaceView implements SurfaceHolder.Callback {
             camera.setDisplayOrientation(0);
             params.setRotation(0);
         }
-
+        params.setPictureSize(mSize.width, mSize.height);
     camera.setParameters(params);
         try{
             camera.setPreviewDisplay(holder);
